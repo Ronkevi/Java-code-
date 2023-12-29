@@ -1,0 +1,104 @@
+// Interface for common account operations
+interface Account {
+    void deposit(double amount);
+    void withdraw(double amount);
+    double checkBalance();
+}
+
+// Base class representing a generic account
+class BankAccount implements Account {
+    protected double balance;
+
+    @Override
+    public void deposit(double amount) {
+        balance += amount;
+        System.out.println("Deposited: " + amount);
+    }
+
+    @Override
+    public void withdraw(double amount) {
+        if (balance >= amount) {
+            balance -= amount;
+            System.out.println("Withdrawn: " + amount);
+        } else {
+            System.out.println("Insufficient funds");
+        }
+    }
+
+    @Override
+    public double checkBalance() {
+        System.out.println("Balance: " + balance);
+        return balance;
+    }
+}
+
+// Savings Account with interest
+class SavingsAccount extends BankAccount {
+    private double interestRate;
+
+    public SavingsAccount(double initialBalance, double interestRate) {
+        this.balance = initialBalance;
+        this.interestRate = interestRate;
+    }
+
+    public void applyInterest() {
+        double interest = balance * interestRate / 100;
+        balance += interest;
+        System.out.println("Interest applied: " + interest);
+    }
+}
+
+// Checking Account with overdraft limit
+class CheckingAccount extends BankAccount {
+    private double overdraftLimit;
+
+    public CheckingAccount(double initialBalance, double overdraftLimit) {
+        this.balance = initialBalance;
+        this.overdraftLimit = overdraftLimit;
+    }
+
+    @Override
+    public void withdraw(double amount) {
+        if (balance + overdraftLimit >= amount) {
+            balance -= amount;
+            System.out.println("Withdrawn: " + amount);
+        } else {
+            System.out.println("Exceeds overdraft limit");
+        }
+    }
+}
+
+// Loan Account with fixed interest rate
+class LoanAccount extends BankAccount {
+    private double interestRate;
+
+    public LoanAccount(double initialBalance, double interestRate) {
+        this.balance = initialBalance;
+        this.interestRate = interestRate;
+    }
+
+    public void applyInterest() {
+        double interest = balance * interestRate / 100;
+        balance += interest;
+        System.out.println("Interest applied: " + interest);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Example usage of account types
+        SavingsAccount savingsAccount = new SavingsAccount(1000, 5);
+        savingsAccount.deposit(500);
+        savingsAccount.checkBalance();
+        savingsAccount.applyInterest();
+        savingsAccount.checkBalance();
+
+        CheckingAccount checkingAccount = new CheckingAccount(2000, 1000);
+        checkingAccount.withdraw(1500);
+        checkingAccount.checkBalance();
+
+        LoanAccount loanAccount = new LoanAccount(5000, 8);
+        loanAccount.checkBalance();
+        loanAccount.applyInterest();
+        loanAccount.checkBalance();
+    }
