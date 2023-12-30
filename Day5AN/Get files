@@ -1,0 +1,25 @@
+import java.io.File;
+import java.io.IOException;
+
+public class FileFinder {
+    public static void main(String[] args) {
+        String folderPath = "your_folder_path";
+        String extension = "your_extension";
+
+        File folder = new File(folderPath);
+
+        if (folder.exists() && folder.isDirectory()) {
+            File[] files = folder.listFiles((dir, name) -> name.endsWith("." + extension));
+
+            if (files != null) {
+                for (File file : files) {
+                    System.out.println(file.getAbsolutePath());
+                }
+            } else {
+                System.out.println("No files found with the specified extension.");
+            }
+        } else {
+            System.out.println("Invalid folder path.");
+        }
+    }
+}
